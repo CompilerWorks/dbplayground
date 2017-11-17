@@ -1,0 +1,3 @@
+#!/bin/sh
+
+exec /opt/presto/bin/launcher run >>/var/log/presto_stdoe.log 2>&1
