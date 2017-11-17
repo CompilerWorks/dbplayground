@@ -19,14 +19,13 @@ RUN mkdir -p /var/local/db/data && \
 RUN echo "host all  all    0.0.0.0/0  trust" >> /var/local/db/data/pg_hba.conf && \
     echo "listen_addresses='*'" >> /var/local/db/data/postgresql.conf
 
-ADD https://repo1.maven.org/maven2/com/facebook/presto/presto-server/0.189/presto-server-0.189.tar.gz /opt/
-RUN cd /opt && \
-    tar xzf presto-server-0.189.tar.gz && \
-    mv presto-server-0.189 presto && \
-    rm presto-server-0.189.tar.gz
+RUN curl -O https://repo1.maven.org/maven2/com/facebook/presto/presto-server/${PRESTO_VERSION}/presto-server-${PRESTO_VERSION}.tar.gz &&\
+    tar xzf presto-server-${PRESTO_VERSION}.tar.gz &&\
+    mv presto-server-${PRESTO_VERSION} /opt/presto &&\
+    rm -f presto-server-${PRESTO_VERSION}.tar.gz
 
-ADD https://repo1.maven.org/maven2/com/facebook/presto/presto-cli/0.189/presto-cli-0.189-executable.jar /opt/presto/bin/prestoclient
-RUN chmod a+x /opt/presto/bin/prestoclient
+RUN curl -o /opt/presto/bin/prestoclient https://repo1.maven.org/maven2/com/facebook/presto/presto-cli/${PRESTO_VERSION}/presto-cli-${PRESTO_VERSION}-executable.jar &&\
+    chmod a+x /opt/presto/bin/prestoclient
 
 COPY src/ /
 
