@@ -1,11 +1,13 @@
 #!/bin/sh
 
-exec /opt/hadoop/sbin/start-dfs.sh
-exec /opt/hadoop/sbin/start-yarn.sh
+# Note: These scripts kill the current shell, so run in the background.
+exec /opt/hadoop/sbin/start-dfs.sh &
+exec /opt/hadoop/sbin/start-yarn.sh &
 
 exec /opt/hadoop/bin/hdfs dfs -mkdir -p /user/hive/warehouse 
 exec /opt/hadoop/bin/hdfs dfs -chmod g+w /user/hive/warehouse
 exec /opt/hadoop/bin/hdfs dfs -mkdir -p /tmp
 exec /opt/hadoop/bin/hdfs dfs -chmod g+w /tmp
 
+# Ugly hack
 exec sleep 10000d

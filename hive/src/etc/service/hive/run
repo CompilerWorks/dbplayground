@@ -1,4 +1,14 @@
 #!/bin/sh
 
-exec ./hive -service metastore
-#sleep 10000d
+initialize() {
+ 	sleep 1
+ 	if [ -f /tmp/dbinit.sql ]; then
+ 		/opt/hive/bin/hive -f /tmp/dbinit.sql
+ 		rm /tmp/dbinit.sql
+ 	fi
+}
+
+initialize &
+
+# Ugly hack
+sleep 10000d

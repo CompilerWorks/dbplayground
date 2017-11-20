@@ -16,14 +16,8 @@ RUN curl -O http://artfiles.org/apache.org/hadoop/common/hadoop-${HADOOP_VERSION
     rm -f hadoop-${HADOOP_VERSION}.tar.gz
 
 RUN apt update && \
-    apt install -y default-jre net-tools ssh pdsh && \
+    apt install -y default-jre net-tools ssh pdsh telnet && \
     rm -rf /var/lib/apt/lists/*
-
-COPY src/ /
-
-ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/jre
-ENV HADOOP_HOME /opt/hadoop
-ENV HIVE_HOME /opt/hive
 
 RUN rm -f /etc/service/sshd/down
 
@@ -35,6 +29,12 @@ RUN /etc/my_init.d/00_regen_ssh_host_keys.sh
 RUN echo "StrictHostKeyChecking no" >> /etc/ssh/ssh_config && \
     ssh-keygen -f /root/.ssh/id_rsa -q && \
     cp /root/.ssh/id_rsa.pub /root/.ssh/authorized_keys
+
+COPY src/ /
+
+ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/jre
+ENV HADOOP_HOME /opt/hadoop
+ENV HIVE_HOME /opt/hive
 
 RUN echo "export JAVA_HOME=/usr/lib/jvm/default-java" >> /opt/hadoop/etc/hadoop/hadoop-env.sh
 
