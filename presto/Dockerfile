@@ -1,8 +1,17 @@
-FROM phusion/baseimage
+FROM phusion/baseimage:0.9.22
 MAINTAINER Karl Stenerud <kstenerud@gmail.com>
 
-ARG PRESTO_VERSION
+ENV PRESTO_VERSION 0.189
 ENV POSTGRESQL_VERSION 9.5
+ENV PRESTO_HOME /opt/presto
+
+RUN curl -O https://repo1.maven.org/maven2/com/facebook/presto/presto-server/${PRESTO_VERSION}/presto-server-${PRESTO_VERSION}.tar.gz && \
+    tar xzf presto-server-${PRESTO_VERSION}.tar.gz && \
+    mv presto-server-${PRESTO_VERSION} ${PRESTO_HOME} && \
+    rm -f presto-server-${PRESTO_VERSION}.tar.gz
+
+RUN curl -o ${PRESTO_HOME}/bin/presto https://repo1.maven.org/maven2/com/facebook/presto/presto-cli/${PRESTO_VERSION}/presto-cli-${PRESTO_VERSION}-executable.jar &&\
+    chmod a+x ${PRESTO_HOME}/bin/presto
 
 RUN apt update && \
     apt install -y default-jre net-tools python postgresql-${POSTGRESQL_VERSION} && \
@@ -18,14 +27,6 @@ RUN mkdir -p /var/local/db/data && \
 
 RUN echo "host all  all    0.0.0.0/0  trust" >> /var/local/db/data/pg_hba.conf && \
     echo "listen_addresses='*'" >> /var/local/db/data/postgresql.conf
-
-RUN curl -O https://repo1.maven.org/maven2/com/facebook/presto/presto-server/${PRESTO_VERSION}/presto-server-${PRESTO_VERSION}.tar.gz &&\
-    tar xzf presto-server-${PRESTO_VERSION}.tar.gz &&\
-    mv presto-server-${PRESTO_VERSION} /opt/presto &&\
-    rm -f presto-server-${PRESTO_VERSION}.tar.gz
-
-RUN curl -o /opt/presto/bin/prestoclient https://repo1.maven.org/maven2/com/facebook/presto/presto-cli/${PRESTO_VERSION}/presto-cli-${PRESTO_VERSION}-executable.jar &&\
-    chmod a+x /opt/presto/bin/prestoclient
 
 COPY src/ /
 

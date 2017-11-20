@@ -9,4 +9,4 @@ initialize() {
 }
 
 initialize &
-exec /sbin/setuser postgres /usr/lib/postgresql/current/bin/postgres -D /var/local/db/data >>/var/log/postgresql_stdoe.log 2>&1
+exec /sbin/setuser postgres /usr/lib/postgresql/current/bin/postgres -D ${POSTGRESQL_DB_HOME} >>/var/log/postgresql_stdoe.log 2>&1
