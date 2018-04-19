@@ -1,9 +1,9 @@
 FROM phusion/baseimage:0.9.22
 MAINTAINER Karl Stenerud <kstenerud@gmail.com>
 
-ENV HIVE_VERSION 2.3.2
+ENV HIVE_VERSION 2.3.3
 ENV POSTGRESQL_VERSION 9.5
-ENV HADOOP_VERSION 2.8.2
+ENV HADOOP_VERSION 2.8.3
 
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/jre
 ENV HADOOP_HOME /opt/hadoop
