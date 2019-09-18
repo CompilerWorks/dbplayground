@@ -1,7 +1,7 @@
 FROM phusion/baseimage:0.9.22
 MAINTAINER Karl Stenerud <kstenerud@gmail.com>
 
-ENV PRESTO_VERSION 0.189
+ENV PRESTO_VERSION 0.225
 ENV POSTGRESQL_VERSION 9.5
 ENV PRESTO_HOME /opt/presto
 
